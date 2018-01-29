@@ -16,12 +16,8 @@ class Inchoo_PHP7_Helper_Data extends Mage_Core_Helper_Data
      * @throws Zend_Json_Exception
      */
     public function jsonDecode($encodedValue, $objectDecodeType = Zend_Json::TYPE_ARRAY) {
-        switch (true) {
-            case (null === $encodedValue)  : $encodedValue = 'null'; break;
-            case (true === $encodedValue)  : $encodedValue = 'true'; break;
-            case (false === $encodedValue) : $encodedValue = 'false'; break;
-            case ('' === $encodedValue)    : $encodedValue = '""'; break;
-            default    : // do nothing
+        if (is_bool($encodedValue) || !$encodedValue) {
+            $encodedValue = var_export($encodedValue, true);
         }
 
         return Zend_Json::decode($encodedValue, $objectDecodeType);
